@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container mt-5">
+        <h2>Search and Analyze Experiments</h2>
+        <form method="get">
+            {{ form.as_p }}
+            <button type="submit">Search</button>
+        </form>
+
+        <h2>Results</h2>
+        {% if experiments %}
+            <ul>
+                {% for experiment in experiments %}
+                    <li>
+                        {{ experiment.name }} ({{ experiment.matrikel_number }})
+                        {% if experiment.is_excel_file %}
+                            <a href="?analyze_id={{ experiment.id }}">Analyze</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <h2>Analysis</h2>
+
+        <label for="sheet-selector">Choose a Sheet:</label>
+        <select id="sheet-selector">
+            {% for sheet_name, sheet_data in analysis_data.items %}
+                <option value="{{ sheet_name }}">{{ sheet_data.sheet_title }}</option>
+            {% endfor %}
+        </select>
+
+        {% if analysis_data %}
+    {% for sheet_name, sheet_data in analysis_data.items %}
+        <div class="sheet-container" id="{{ sheet_name }}">
+            <h2>{{ sheet_data.sheet_title }}</h2>
+
+            <!-- Table displaying data -->
+            <table >
+                <thead>
+                    {% for key, value in sheet_data.data.items %}
+                        <th>{{ key }}</th>
+                    {% endfor %}
+                </thead>
+                <tbody>
+                    {# Assuming all columns have the same number of rows #}
+                    {% for i in sheet_data.data.keys.0 %}
+                        <tr>
+                            {% for key, value in sheet_data.data.items %}
+                                <td>{{ value.i }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Displaying the plot -->
+            {% for plot_sheet_name, img_path in plots.items %}
+                {% if plot_sheet_name == sheet_name %}
+                    <img src="{{ MEDIA_URL }}{{ img_path }}" alt="Plot for {{ sheet_name }}" width="400">
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endif %}
+
+
+    </div>
+
+    <script>
+        // JavaScript code for the dropdown
+        const sheetSelector = document.getElementById("sheet-selector");
+        const sheetContainers = document.querySelectorAll(".sheet-container");
+
+        function hideAllSheets() {
+            sheetContainers.forEach(container => {
+                container.style.display = "none";
+            });
+        }
+
+        function showSelectedSheet() {
+            const selectedSheet = sheetSelector.value;
+            const container = document.getElementById(selectedSheet);
+            if (container) {
+                container.style.display = "block";
+            }
+        }
+
+        hideAllSheets();
+        showSelectedSheet();
+
+        sheetSelector.addEventListener("change", () => {
+            hideAllSheets();
+            showSelectedSheet();
+        });
+    </script>
+{% endblock %}
+
+

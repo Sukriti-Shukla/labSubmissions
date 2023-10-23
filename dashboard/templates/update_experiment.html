@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Experiment{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Update Experiment Data</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.name.label_tag }} 
+            <input type="text" name="{{ form.name.name }}" class="form-control" required value="{{ form.name.value }}">
+        </div>
+        <div class="mb-3">
+            {{ form.matrikel_number.label_tag }}
+            <input type="text" name="{{ form.matrikel_number.name }}" class="form-control" required value="{{ form.matrikel_number.value }}">
+        </div>
+        <div class="mb-3">
+            {{ form.experiment_number.label_tag }}
+            {{ form.experiment_number }}
+        </div>
+        <div class="mb-3">
+            {{ form.report.label_tag }} 
+            <input type="file" name="{{ form.report.name }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            {{ form.raw_data.label_tag }} 
+            <input type="file" name="{{ form.raw_data.name }}" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+{% endblock %}

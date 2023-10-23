@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}My Submissions{% endblock %}
+
+{% block content %}
+<h1>My Submissions</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Experiment Number</th>
+            <th>Date of Submission</th>
+            <th>Semester</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for experiment in experiments %}
+        <tr>
+            <td>{{ experiment.name }}</td>
+            <td>{{ experiment.experiment_number }}</td>
+            <td>{{ experiment.date_of_submission }}</td>
+            <td>{{ experiment.semester }}</td>
+            <td>
+                {% if experiment.show_update_delete %}
+                    <a href="{% url 'update_experiment' experiment.id %}">Update</a> | 
+                    <a href="{% url 'delete_experiment' experiment.id %}">Delete</a> | 
+                {% endif %}
+                <a href="{{ experiment.report.url }}" download>Download Report</a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+{% endblock %}

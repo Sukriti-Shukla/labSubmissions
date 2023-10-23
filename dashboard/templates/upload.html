@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <h1 class="mb-4">Upload Experiment Data</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.name.label_tag }} 
+            <input type="text" name="{{ form.name.name }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            {{ form.matrikel_number.label_tag }}
+            <input type="text" name="{{ form.matrikel_number.name }}" class="form-control" required>
+        </div>
+        <!-- <div class="mb-3">
+            {{ form.experiment_number.label_tag }} 
+            <select name="{{ form.experiment_number.name }}" class="form-select">
+                <option value="exp1">Experiment 1</option>
+                <option value="exp2">Experiment 2</option>
+                <option value="exp3">Experiment 3</option>
+            </select>
+        </div> -->
+        <div class="mb-3">
+            {{ form.semester.label_tag }}
+            {{ form.semester }}
+        </div>
+        <div class="mb-3">
+            {{ form.experiment_number.label_tag }}
+            {{ form.experiment_number }}
+        </div>
+        
+        <!-- <div class="mb-3">
+            {{ form.report.label_tag }} 
+            <input type="file" name="{{ form.report.name }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            {{ form.raw_data.label_tag }} 
+            <input type="file" name="{{ form.raw_data.name }}" class="form-control" required>
+        </div> -->
+        <div class="mb-3">
+            {{ form.report.label_tag }}
+            <input type="file" name="{{ form.report.name }}" class="form-control" required>
+            {% if form.report.errors %}
+                <div class="alert alert-danger">
+                    {{ form.report.errors|first }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.raw_data.label_tag }}
+            <input type="file" name="{{ form.raw_data.name }}" class="form-control" required>
+            {% if form.raw_data.errors %}
+                <div class="alert alert-danger">
+                    {{ form.raw_data.errors|first }}
+                </div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+    {% else %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Please Login</h5>
+            <p class="card-text">You need to be logged in to upload experiment data.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

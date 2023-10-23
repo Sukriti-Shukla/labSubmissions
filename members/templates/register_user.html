@@ -1,0 +1,28 @@
+{% extends "base.html" %}  
+
+{% block content %}
+
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ field.label }}:</strong> {{ error }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+  <div class = "shadow p-4 mb-5 bg-white rounded">
+  <h2>Register</h2>
+  <form action="{% url 'register_user' %}" method="POST">
+    {% csrf_token %}
+
+     {{ form.as_p}}
+     
+      <br/><br/>  
+      <button type="submit" class="btn btn-secondary">Submit</button>
+    </form>
+    
+  </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="get" action="{% url 'download' %}">
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+
+    {% if experiments %}
+    <ul>
+        {% for experiment in experiments %}
+        <li>
+            {{ experiment.name }} ({{ experiment.matrikel_number }})
+            <a href="{{ experiment.report.url }}">Download Report</a>
+            <a href="{{ experiment.raw_data.url }}">Download Data</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No experiments found.</p>
+    {% endif %}
+{% endblock %}
